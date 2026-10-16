@@ -1,0 +1,2 @@
+Model,Test RMSE,Test MAE,Test R2
+Polynomial (degree 2),0.1455,0.1173,0.2214

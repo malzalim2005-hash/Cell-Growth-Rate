@@ -1,14 +1,23 @@
-# =====================================================================
-# MAIN PROGRAM
-# Your code starts here. This is the file that will be run.
-# =====================================================================
+from src import constants as c
+from src import functions as f
 
-import src.functions as sf  # This allows you to access functions from functions.py using sf.function_name()
-from src.classes import Batch  # This allows you to import individual Classes from classes.py
-from src.constants import *  # This imports all constants from constants.py
 
-ph_optimal = sf.calculate_average(PH_LIMITS)
-temperature_optimal = sf.calculate_average(TEMPERATURE_LIMITS)
+def main():
+    c.FIGURES_DIR.mkdir(exist_ok=True)
+    c.TABLES_DIR.mkdir(exist_ok=True)
 
-batch = Batch(batch_id=1, ph_opt=ph_optimal, temperature_opt=temperature_optimal)
-batch.display_info()
+    df = f.load_data()
+    X_train, X_test, y_train, y_test = f.split_data(df)
+
+    models = f.build_candidates()
+    results = f.compare_models(models, X_train, y_train)
+    f.plot_model_comparison(results)
+
+    best_name = results.iloc[0]["Model"]
+    print(f"\nSelected model: {best_name}")
+    best_model = f.evaluate_on_test(best_name, models[best_name], X_train, X_test, y_train, y_test)
+    f.plot_feature_effects(best_model, X_train)
+
+
+if __name__ == "__main__":
+    main()
