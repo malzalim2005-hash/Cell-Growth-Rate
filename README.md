@@ -1,4 +1,4 @@
-# Repository Structure
+
 # Cell Growth Rate Prediction
 
 This project applies machine learning to estimate cell growth rates based on four essential culture parameters: temperature, pH, glucose and lactate levels. Polynomial and k-nearest neighbours regression models are compared, and amongst them the best-performing is chosen through cross-validation, while also identifying the role of the individual variables. As a result bioprocessing specialists are able to determine optimal conditions for conducting experiments without repeated testing.
@@ -41,7 +41,7 @@ All candidate models are assessed through 5-fold cross-validation on the trainin
 The correlation was made that the model with the minimum mean cross-validation RMSE is automatically chosen. It goes through retraining on the complete training dataset and the growth rate of the test set is predicted. The test RMSE, mean absolute error, and R² are saved in `tables/test_metrics.csv` and a parity plot with the measured and predicted values is generated and saved in `figures/parity_plot.png`. This confirms that the performance shown in the cross-validation is applicable to unseen data.
 ### Feature Effect Analysis
 
-In conclusion, partial dependence plots are produced for each of the four variables used in the process, and these plots are stored in the “figure/feature_effects. png”. Partial dependence plot describes how the value of the predicted growth rate is affected by a specific variable, while the average influence of the other variables is taken into account. In this way, the trained model changes from a black-box predictor to an analytical tool to understand the process.
+In conclusion, partial dependence plots are produced for each of the four variables used in the process, and these plots are stored in the 'figure/feature_effects. png'. Partial dependence plot describes how the value of the predicted growth rate is affected by a specific variable, while the average influence of the other variables is taken into account. In this way, the trained model changes from a black-box predictor to an analytical tool to understand the process.
 
 ## Analysis
 
@@ -75,9 +75,9 @@ The best KNN model (k = 15, CV RMSE = 0.1628) performs almost as well as the sec
 
 1. **Interpretability.** In terms of interpretability, while the polynomial model has a formula that is simple (having 15 coefficients) with smooth response curves that enable the clear identification of optimum pH and temperature values, KNN does not have a defined formula. KNN utilizes lot of samples in every prediction, because KNN does not have a single mathematical formula for prediction. 
 2. **Efficiency.** The polynomial model has to only store its coefficients to perform predictions, whereas KNN has to store the whole training data.
-3. **Biological Consistency.** The quadratic nature of KNN is expected in the nature of cell growth.
+3. **Biological Consistency.** The quadratic shape of the polynomial model matches the expected behaviour of cell growth around an optimum.
 
-However, it should be noted that in spite of the more complex nature of KNN, KNN is more stable across folds, with the standard deviation of 0.0054 compared to 0.0164 (as indicated in Table 5.2).
+However, it should be noted that KNN is more stable across folds, with a standard deviation of 0.0054 compared to 0.0164 (see the table above).
 ### Final Model Performance
 
 Once the selection of the model is completed, the model was trained on full training set again and tested on the prescribed testing set. 
@@ -109,7 +109,7 @@ According to the partial dependence graph seen above, we can see the impacts tha
 - **Temperature** has a definite optimum of around 36 °C, yielding a predicted growth rate of around 0.32 d⁻¹. Growth rate drops to about 0.12 d⁻¹ at both 30 °C and 42 °C. Low temperatures impede the rate of enzymatic processes, while high temperatures lead to thermal stress and damage to proteins.
 - Similar to temperature, **pH** has an optimum value, which is approximately equal to pH 7.0, generating a predicted growth rate of around 0.35 d⁻¹. Both directions from the optimum reduce the growth so that the cells have to spend energy to maintain their internal pH and carry out enzymatic processes.
 - **Glucose** plays a positive role in the process studied here. Its impact can be seen in the predicted growth rate that increases from around 0.24 d⁻¹ without glucose to around 0.35 d⁻¹ at 30 mM glucose concentration.- **Lactate** has a negative effect. The predicted growth rate falls from about 0.41 d⁻¹ without lactate to about 0.20 d⁻¹ at 30 mM. Lactate is a metabolic byproduct that inhibits growth as it accumulates in the culture.
--   **Lactate** produces a negative effect as it reduces the predicted growth rate from around 0.41 d⁻¹ to around 0.20 d⁻¹ at a concentration of 30 mM. Lactate is a metabolite produced through the metabolism of glucose but has been shown to have an inhibitory effect with its accumulation in the culture.
+-**Lactate** produces a negative effect as it reduces the predicted growth rate from around 0.41 d⁻¹ to around 0.20 d⁻¹ at a concentration of 30 mM. Lactate is a metabolite produced through the metabolism of glucose but has been shown to have an inhibitory effect with its accumulation in the culture.
 
 Temperature and pH can show the strongest effects due to the much wider range of response curves produced by them. Lactate also shows a significant effect while glucose demonstrates the smallest effect among the four variables.
 
@@ -122,8 +122,7 @@ On the other hand, **low specific growth rate** occurs when temperature and/or p
 
 The situations in which the model is not credible are as follow:
 
--  **Under training conditions.** The model is developed with temperatures between 30 and 42°C, glucose and lactate concentration between 0 and 40 mM, and limited pH values. Though out of its scope these quadratic functions run systematically and make unrealistic or negative predictions.
--  **Growth near zero.** As shown in the parity plot all the cultures that have not grown are overestimated. The model fails to predict phenomena in which growth completely stops.
+- **Outside the training range.** The model was developed with temperatures between 30 and 42 °C, pH values between 6.0 and 7.8, and glucose and lactate concentrations between 0 and 40 mM. Outside these ranges, the quadratic terms extrapolate rapidly and can produce unrealistic or negative predictions.-  **Growth near zero.** As shown in the parity plot all the cultures that have not grown are overestimated. The model fails to predict phenomena in which growth completely stops.
 -  **Very high values of growth.** The growth rates above 0.6 d-1 are constantly underestimated.
 -  **Uncommon situations.** Areas of rare training data such as high temperature and high lactate together in one case showed small predictions reliability.
 
